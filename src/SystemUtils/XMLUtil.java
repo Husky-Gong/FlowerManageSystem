@@ -21,7 +21,7 @@ public class XMLUtil {
 	static {
 		try(InputStream in = Thread.currentThread().
 								getContextClassLoader().
-								getResourceAsStream("NetInfoXML.xml")
+								getResourceAsStream("NetInfo.xml")
 				){
 			if(in == null) throw new RuntimeException("Loading failed");
 			
