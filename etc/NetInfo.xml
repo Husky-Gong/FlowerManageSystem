@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlInfo>
+	<info key="userName" value="root"/>
+	<info key="passWord" value="Zz010013"/>
+	<info key="url" value="jdbc:mysql://localhost:3306/flowersystem&#63;useUnicode=true&#38;useSSL=false&#38;charsetEncoding=utf8"/>
+</sqlInfo>
