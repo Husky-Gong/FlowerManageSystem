@@ -1,6 +1,6 @@
 package SystemClass;
 
-import SystemUtils.SystemAnnotation.systemAnnotation;
+import SystemUtils.SystemAnnotation;
 
 /*
  * create table if not exists flower(
@@ -19,21 +19,21 @@ import SystemUtils.SystemAnnotation.systemAnnotation;
  * columnName = "flower_name". It's the column name in table corresponding to flowerName
  */
 
-@systemAnnotation(tableName="flower")
+@SystemAnnotation(tableName="flower")
 public class Flower {
-	@systemAnnotation(readOnly = false, 
+	@SystemAnnotation(readOnly = false, 
 					  setMethod = "setFlowerName", 
 					  getMethod = "getFlowerName", 
 					  columnName = "flower_name")
 	private String flowerName;
 	
-	@systemAnnotation(readOnly = false,
+	@SystemAnnotation(readOnly = false,
 					  setMethod = "setPrice",
 					  getMethod = "getPrice",
 					  columnName = "flower_column")
 	private double price;
 	
-	@systemAnnotation(readOnly = false,
+	@SystemAnnotation(readOnly = false,
 					  setMethod = "setStock",
 					  getMethod = "getStock",
 					  columnName = "flower_number")
