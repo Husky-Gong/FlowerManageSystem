@@ -36,8 +36,46 @@ public class mkSqlUtil {
 		return res.toString();
 	}
 	
+	/*
+	 * UPDATE [LOW_PRIORITY] [IGNORE] table_name 
+	 *		SET 
+	 *		    column_name1 = expr1,
+	 *		    column_name2 = expr2,
+	 *		    ...
+	 *		[WHERE
+	 *		    condition];
+	 *
+	 *	This method will be used to help manager
+	 *	modify flower price, name, stock number
+	 *	its input parameters will include a class
+	 *  its output string will contain all parameters
+	 *  in the table.
+	 *  
+	 *  Manager should insert the flower name to search 
+	 *  in the table
+	 */
+	public String createModifySQL(Class<?> clz) {
+		Map<String,String> params = getParams(clz);
+		StringBuilder res = new StringBuilder(100);
+		res.append("UPDATE ")
+			.append(params.get("tableName"))
+			.append(" SET ");
+		String[] paramList = params.get("params")
+									.replaceAll("[()]", "")
+									.split(",");
+		for(int i=0;i < paramList.length;i++) {
+			res.append(paramList[i])
+				.append("= ?,");
+		}
+		res.setLength(res.length()-1);
+		res.append(" WHERE ");
+		return res.toString();
+	}
 	
-	/* 1. Initialize the annotation and get parameter's table name
+	/* This is a helper method, which will be used in sql find method 
+	 * and sql insert method.
+	 * 
+	 * 1. Initialize the annotation and get parameter's table name
 	 * if there is no default table name, 
 	 * then use the class name as table name
 	 * 
@@ -83,5 +121,6 @@ public class mkSqlUtil {
 		
 		return res;
 	}
+	
 }
 

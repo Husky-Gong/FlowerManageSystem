@@ -6,17 +6,23 @@ import SystemClass.Flower;
 import SystemUtils.mkSqlUtil;
 
 public class SQLTest {
+	mkSqlUtil sql = new mkSqlUtil();
+	
 	@Test
 	public void testInsertFunction() {
-		mkSqlUtil sql = new mkSqlUtil();
 		String insertSQL = sql.createInsertSQL(Flower.class);
 		System.out.println(insertSQL);
 	}
 	
 	@Test
 	public void testFindFunction() {
-		mkSqlUtil sql = new mkSqlUtil();
 		String findSql = sql.createFindSQL(Flower.class);
 		System.out.println(findSql);
+	}
+	
+	@Test
+	public void testModifyFunction() {
+		String modifySql = sql.createModifySQL(Flower.class);
+		System.out.println(modifySql);
 	}
 }
