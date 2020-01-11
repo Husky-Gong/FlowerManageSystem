@@ -1,9 +1,44 @@
 package SystemClass;
 
+import SystemUtils.SystemAnnotation.systemAnnotation;
+
+/*
+ * create table if not exists flower(
+	 flower_name varchar(20) not null,
+	 flower_number int(5) not null,
+	 flower_price decimal(5) not null,
+	 primary key(flower_name, flower_price)
+)engine=innodb;
+
+ */
+
+/*
+ * readOnly = false, flowerName not only be read but also be written and modified and inserted
+ * setMethod = "setFlowerName". It's the set method corresponding to flowerName value and it will be used in reflection
+ * getMethod = "getFlowerName". It's the get method corresponding to flowerName value and it will be used in reflection
+ * columnName = "flower_name". It's the column name in table corresponding to flowerName
+ */
+
+@systemAnnotation(tableName="flower")
 public class Flower {
+	@systemAnnotation(readOnly = false, 
+					  setMethod = "setFlowerName", 
+					  getMethod = "getFlowerName", 
+					  columnName = "flower_name")
 	private String flowerName;
+	
+	@systemAnnotation(readOnly = false,
+					  setMethod = "setPrice",
+					  getMethod = "getPrice",
+					  columnName = "flower_column")
 	private double price;
+	
+	@systemAnnotation(readOnly = false,
+					  setMethod = "setStock",
+					  getMethod = "getStock",
+					  columnName = "flower_number")
 	private int stock;
+	
 	public String getFlowerName() {
 		return flowerName;
 	}
@@ -28,6 +63,44 @@ public class Flower {
 		this.flowerName = flowerName;
 		this.price = price;
 		this.stock = stock;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((flowerName == null) ? 0 : flowerName.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + stock;
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Flower other = (Flower) obj;
+		if (flowerName == null) {
+			if (other.flowerName != null)
+				return false;
+		} else if (!flowerName.equals(other.flowerName))
+			return false;
+		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+			return false;
+		if (stock != other.stock)
+			return false;
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return "Flower [flowerName=" + flowerName + ", price=" + price + ", stock=" + stock + "]";
 	};
 	
 	
