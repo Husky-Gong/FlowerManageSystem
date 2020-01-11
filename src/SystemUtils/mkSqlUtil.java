@@ -2,6 +2,7 @@ package SystemUtils;
 
 import java.lang.reflect.Field;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -24,6 +25,7 @@ public class mkSqlUtil {
 		return res.toString();
 	}
 
+	
 	public String createFindSQL(Class<?> clz) {
 		Map<String,String> paraMap = getParams(clz);
 		StringBuilder res = new StringBuilder(100);
@@ -35,6 +37,7 @@ public class mkSqlUtil {
 						.append(paraMap.get("tableName"));
 		return res.toString();
 	}
+	
 	
 	/*
 	 * UPDATE [LOW_PRIORITY] [IGNORE] table_name 
@@ -54,6 +57,8 @@ public class mkSqlUtil {
 	 *  Manager should insert the flower name to search 
 	 *  in the table
 	 */
+	
+	
 	public String createModifySQL(Class<?> clz) {
 		Map<String,String> params = getParams(clz);
 		StringBuilder res = new StringBuilder(100);
@@ -63,12 +68,16 @@ public class mkSqlUtil {
 		String[] paramList = params.get("params")
 									.replaceAll("[()]", "")
 									.split(",");
+		String name = "";
 		for(int i=0;i < paramList.length;i++) {
 			res.append(paramList[i])
 				.append("= ?,");
+			name = paramList[i].contains("name")? paramList[i]:name;
 		}
 		res.setLength(res.length()-1);
-		res.append(" WHERE ");
+		res.append(" WHERE ")
+			.append(name)
+			.append("=?");
 		return res.toString();
 	}
 	
