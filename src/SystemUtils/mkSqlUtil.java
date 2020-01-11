@@ -14,21 +14,25 @@ public class mkSqlUtil {
 	 * VALUES (v1,v2,...);
 	 */
 	public String createInsertSQL(Class<?> clz) {
+		Map<String,String> paraMap = getParams(clz);
 		StringBuilder res = new StringBuilder(100);
-		
+		res.append("insert into ")
+			.append(paraMap.get("tableName"))
+			.append(paraMap.get("params"))
+			.append(" VALUES ")
+			.append(paraMap.get("preParams"));
 		return res.toString();
 	}
 
 	public String createFindSQL(Class<?> clz) {
 		Map<String,String> paraMap = getParams(clz);
 		StringBuilder res = new StringBuilder(100);
-		String tableName = paraMap.get("tableName");
 		String params = paraMap.get("params");
 		int endIndex = params.length()-2;
 		res.append("select ")
 				.append(params.substring(1, endIndex))
-					.append("from ")
-						.append(tableName);
+					.append(" from ")
+						.append(paraMap.get("tableName"));
 		return res.toString();
 	}
 	
