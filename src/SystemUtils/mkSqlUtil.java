@@ -2,7 +2,6 @@ package SystemUtils;
 
 import java.lang.reflect.Field;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 /*
@@ -62,6 +61,7 @@ public class mkSqlUtil {
 	public String createModifySQL(Class<?> clz) {
 		Map<String,String> params = getParams(clz);
 		StringBuilder res = new StringBuilder(100);
+		StringBuilder res2 = new StringBuilder(100);
 		res.append("UPDATE ")
 			.append(params.get("tableName"))
 			.append(" SET ");
@@ -70,15 +70,16 @@ public class mkSqlUtil {
 									.split(",");
 		String name = "";
 		for(int i=0;i < paramList.length;i++) {
+			res2.append(paramList[i]).append(",");
 			res.append(paramList[i])
 				.append("= ?,");
 			name = paramList[i].contains("name")? paramList[i]:name;
 		}
 		res.setLength(res.length()-1);
-		res.append(" WHERE ")
-			.append(name)
-			.append("=?");
-		return res.toString();
+		
+		return res.append(" WHERE ")
+					.append(name)
+					.append("=?").toString();
 	}
 	
 	/* This is a helper method, which will be used in sql find method 
