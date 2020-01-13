@@ -2,6 +2,8 @@ package SystemTest;
 
 import org.junit.Test;
 
+import DAOs.BaseDao;
+import FunctionHelper.ModifyHelper;
 import SystemClass.Flower;
 import SystemUtils.mkSqlUtil;
 
@@ -20,9 +22,15 @@ public class SQLTest {
 		System.out.println(findSql);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testModifyFunction() {
-		String modifySql = sql.createModifySQL(Flower.class);
-		System.out.println(modifySql);
+	public <T> void testModifyFunction() throws Exception {
+		System.out.println("You are now testing modify function...");
+		ModifyHelper flwHelp = new FunctionHelper.ModifyHelper();
+		Flower newFlower = flwHelp.flowerHelper();
+		BaseDao<T> testDao = new BaseDao<T>();
+		int i = testDao.modifyEntity((T) newFlower);
+		
+		System.out.println(i);
 	}
 }

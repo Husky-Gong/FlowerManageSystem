@@ -26,7 +26,8 @@ public class BaseDao<T> {
 	 * This method is to help users change their password or username
 	 * or to help managers change flower information
 	 * ** the history is only available to search history purchase information
-	 * 
+	 * ** this method only works when the input object exists.
+	 * ** Add function need call another helper!!
 	 * 1. Input: its input is an object. This object contains all 
 	 * 				information which we want to replace '?' in prepared statement sql
 	 * 2. Output: it returns how many lines in table will be modified
@@ -53,8 +54,8 @@ public class BaseDao<T> {
 			if(an.readOnly()) continue;
 			
 			Method method = clz.getDeclaredMethod(an.getMethod());
-			if(an.getMethod().contains("user_userName")|| an.getMethod().contains("flower_name"))
-				whereInfo = an.getMethod();
+			if(an.getMethod().contains("userName")|| an.getMethod().contains("FlowerName"))
+				whereInfo = (String) method.invoke(type);
 			
 			Object obj = method.invoke(type);
 			// setObject index starts from 1

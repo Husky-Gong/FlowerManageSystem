@@ -30,7 +30,7 @@ public class Flower {
 	@SystemAnnotation(readOnly = false,
 					  setMethod = "setPrice",
 					  getMethod = "getPrice",
-					  columnName = "flower_column")
+					  columnName = "flower_price")
 	private double price;
 	
 	@SystemAnnotation(readOnly = false,
