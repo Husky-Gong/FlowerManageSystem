@@ -98,6 +98,8 @@ public class BaseDao<T> {
 	 * This method contains 2 sub-methods
 	 * 		1. One is to get all information from the table;
 	 * 		2. The other one will get exact one information from the table;
+	 * !! When we use 'getDeclaredMethod' to get methods having parameters, 
+	 * 		we have to put those parameters' classes after its method's name
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> findEntity(T type) throws Exception{
@@ -131,25 +133,4 @@ public class BaseDao<T> {
 		
 		return list;
 	}
-	
-//	public int findAllEntity(T type) throws Exception {
-//		ConnectUtil connUtil = new ConnectUtil();
-//		Connection conn = connUtil.getConn();
-//		Class<?> clz = type.getClass();
-//		mkSqlUtil mkSql = new mkSqlUtil();
-//		String sql = mkSql.createFindSQL(clz);
-//		
-//		int parameterIndex = 1;
-//		String whereInfo = null;
-//		for(Field field : clz.getDeclaredFields()) {
-//			SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
-//			if(an.readOnly()) continue;
-//			
-//			Method method = clz.getDeclaredMethod(an.getMethod());
-//			if(an.getMethod().contains("userName")||an.getMethod().contains("FlowerName"))
-//				whereInfo = (String) method.invoke(type);
-//		}
-//		
-//		return -1;
-//	}
 }
