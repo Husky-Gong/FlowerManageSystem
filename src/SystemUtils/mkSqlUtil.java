@@ -29,7 +29,7 @@ public class mkSqlUtil {
 		Map<String,String> paraMap = getParams(clz);
 		StringBuilder res = new StringBuilder(100);
 		String params = paraMap.get("params");
-		int endIndex = params.length()-2;
+		int endIndex = params.length()-1;
 		res.append("select ")
 				.append(params.substring(1, endIndex))
 					.append(" from ")

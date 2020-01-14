@@ -42,21 +42,24 @@ public class Flower {
 	public String getFlowerName() {
 		return flowerName;
 	}
-	public void setFlowerName(String flowerName) {
-		this.flowerName = flowerName;
+	
+	public void setFlowerName(Object flowerName) {
+		this.flowerName = (String) flowerName;
 	}
 	public double getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
-		this.price = price;
+	public void setPrice(Object price) {
+		this.price = (double) price;
 	}
 	public int getStock() {
 		return stock;
 	}
-	public void setStock(int stock) {
-		this.stock = stock;
+	public void setStock(Object stock) {
+		this.stock = (int) stock;
 	}
+	
+	public Flower() {}
 	
 	public Flower(String flowerName, double price, int stock) {
 		super();
@@ -64,6 +67,17 @@ public class Flower {
 		this.price = price;
 		this.stock = stock;
 	}
+	
+	/* This constructor will be used in the find entity
+	 * because we do not need more information other than its name.	 
+	 */
+	public Flower(String flowerName) {
+		super();
+		this.flowerName = flowerName;
+		this.price = 0.0;
+		this.stock = 0;
+	}
+	
 	
 	@Override
 	public int hashCode() {

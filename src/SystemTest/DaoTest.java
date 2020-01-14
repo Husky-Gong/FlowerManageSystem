@@ -1,8 +1,11 @@
 package SystemTest;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import DAOs.BaseDao;
+import FunctionHelper.FindHelper;
 import FunctionHelper.InsertHelper;
 import SystemClass.Flower;
 
@@ -20,5 +23,17 @@ public class DaoTest {
 		int i = testDao.insertEntity((T) newFlower);
 		
 		System.out.println(i);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public <T> void testFindEntity() throws Exception {
+		System.out.println("You are now testing find entity......");
+		FindHelper findFlowers = new FindHelper();
+		BaseDao<T> testDao = new BaseDao<T>();
+		List<T> flwlist = testDao.findEntity((T) findFlowers.getFlowers());
+		for(T var:flwlist) {
+			System.out.println(var);
+		}
 	}
 }

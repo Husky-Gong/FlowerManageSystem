@@ -4,7 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import SystemUtils.ConnectUtil;
 import SystemUtils.SystemAnnotation;
@@ -88,7 +91,65 @@ public class BaseDao<T> {
 			
 			ps.setObject(parameterIndex++, obj);
 		}
-		
 		return ps.executeUpdate();
 	}
+	
+	/*
+	 * This method contains 2 sub-methods
+	 * 		1. One is to get all information from the table;
+	 * 		2. The other one will get exact one information from the table;
+	 */
+	@SuppressWarnings("unchecked")
+	public List<T> findEntity(T type) throws Exception{
+		ConnectUtil connUtil = new ConnectUtil();
+		Connection conn = connUtil.getConn();
+		List<T> list = new ArrayList<>();
+		Class<?> clz = type.getClass();
+		mkSqlUtil mkSql = new mkSqlUtil();
+		
+		String sql = mkSql.createFindSQL(clz);
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery(sql);
+		
+		while(rs.next()) {
+			// To create a new object, which will be put into the result list.
+			T obj = (T) clz.getConstructor().newInstance();
+			// get information from each 'type'(the object)
+			for(Field field : clz.getDeclaredFields()) {
+				SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
+				
+				// get each column name and by this column name to search the table
+				// column name --> set method --> complete new object
+				String columnName = an.columnName();
+				Object objVar = rs.getObject(columnName);
+				Method method = clz.getDeclaredMethod(an.setMethod(),Object.class);
+				method.invoke(obj, objVar);
+			}
+			
+			list.add(obj);
+		}
+		
+		return list;
+	}
+	
+//	public int findAllEntity(T type) throws Exception {
+//		ConnectUtil connUtil = new ConnectUtil();
+//		Connection conn = connUtil.getConn();
+//		Class<?> clz = type.getClass();
+//		mkSqlUtil mkSql = new mkSqlUtil();
+//		String sql = mkSql.createFindSQL(clz);
+//		
+//		int parameterIndex = 1;
+//		String whereInfo = null;
+//		for(Field field : clz.getDeclaredFields()) {
+//			SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
+//			if(an.readOnly()) continue;
+//			
+//			Method method = clz.getDeclaredMethod(an.getMethod());
+//			if(an.getMethod().contains("userName")||an.getMethod().contains("FlowerName"))
+//				whereInfo = (String) method.invoke(type);
+//		}
+//		
+//		return -1;
+//	}
 }
