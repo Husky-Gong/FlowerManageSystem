@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import SystemUtils.ConnectUtil;
 import SystemUtils.SystemAnnotation;
@@ -15,7 +16,9 @@ import SystemUtils.mkSqlUtil;
  * flower_name= ?,flower_column= ?,flower_number= ? 
  * WHERE 
  * flower_name=?
-
+ * 
+ * Here we don't need to pay attention to whether there are multiple connections,
+ * because we have checked it when we create connUtil object.
  */
 
 public class BaseDao<T> {
@@ -65,7 +68,27 @@ public class BaseDao<T> {
 		return ps.executeUpdate();
 	}
 	
-	private void print(String str) {
-		System.out.println(str);
+	public int insertEntity(T type) throws Exception {
+		ConnectUtil connUtil = new ConnectUtil();
+		Connection conn = connUtil.getConn();
+		Class<?> clz = type.getClass();
+		mkSqlUtil mkSql = new mkSqlUtil();
+		String sql = mkSql.createInsertSQL(clz);
+		PreparedStatement ps = conn.prepareStatement(sql);
+		
+		int parameterIndex = 1;
+		for(Field field: clz.getDeclaredFields()) {
+			SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
+			
+			if(an.readOnly()) continue;
+			
+			Method method = clz.getDeclaredMethod(an.getMethod());
+			
+			Object obj = method.invoke(type);
+			
+			ps.setObject(parameterIndex++, obj);
+		}
+		
+		return ps.executeUpdate();
 	}
 }

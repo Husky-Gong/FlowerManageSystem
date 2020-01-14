@@ -82,6 +82,11 @@ public class mkSqlUtil {
 					.append("=?").toString();
 	}
 	
+
+
+
+
+
 	/* This is a helper method, which will be used in sql find method 
 	 * and sql insert method.
 	 * 
