@@ -1,6 +1,6 @@
 package SystemTest;
+import java.util.Map;
 
-import java.util.List;
 import org.junit.Test;
 
 import DAOs.BaseDao;
@@ -31,9 +31,13 @@ public class DaoTest {
 		System.out.println("You are now testing find entity......");
 		FindHelper findFlowers = new FindHelper();
 		BaseDao<T> testDao = new BaseDao<T>();
-		List<T> flwlist = testDao.findEntity((T) findFlowers.getFlowers());
-		for(T var:flwlist) {
-			System.out.println(var);
+		Map<String,T> flwMap = testDao.findEntity((T) findFlowers.getFlowers());
+		for(Map.Entry<String, T> entry: flwMap.entrySet()) {
+			String key = entry.getKey();
+			T obj = entry.getValue();
+			System.out.println(key);
+			System.out.println(obj);
+			System.out.println("-------------");
 		}
 	}
 	
@@ -44,7 +48,6 @@ public class DaoTest {
 		System.out.println("You are now testing delete entity......");
 		DeleteHelper deleteFlower = new DeleteHelper();
 		BaseDao<T> testDao = new BaseDao<T>();
-		
 		int i = testDao.deleteEntity((T) deleteFlower.deleteFlower());
 		System.out.println(i);
 	}

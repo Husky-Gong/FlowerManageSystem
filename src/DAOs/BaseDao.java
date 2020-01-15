@@ -6,8 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Hashtable;
+import java.util.Map;
 
 import SystemUtils.ConnectUtil;
 import SystemUtils.SystemAnnotation;
@@ -56,9 +56,7 @@ public class BaseDao<T> {
 		String whereInfo = null;
 		for(Field field : clz.getDeclaredFields()) {
 			SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
-			
 			if(an.readOnly()) continue;
-			
 			Method method = clz.getDeclaredMethod(an.getMethod());
 			if(an.getMethod().contains("userName")|| an.getMethod().contains("FlowerName"))
 				whereInfo = (String) method.invoke(type);
@@ -82,13 +80,9 @@ public class BaseDao<T> {
 		int parameterIndex = 1;
 		for(Field field: clz.getDeclaredFields()) {
 			SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
-			
 			if(an.readOnly()) continue;
-			
 			Method method = clz.getDeclaredMethod(an.getMethod());
-			
 			Object obj = method.invoke(type);
-			
 			ps.setObject(parameterIndex++, obj);
 		}
 		return ps.executeUpdate();
@@ -103,38 +97,41 @@ public class BaseDao<T> {
 	 * 	3. Using set method, which is also got by the annotation, to set each field in the new instance.
 	 * 		!! When we use 'getDeclaredMethod' to get methods having parameters, 
 	 * 			we have to put those parameters' classes after its method's name
+	 * 
+	 * 	4. In the while loop:
+	 * 			a. To create a new object, which will be put into the result list.
+	 * 			b. get information from each 'type'(the object)
+	 * 			c. get each column name and by this column name to search the table
+				d. column name --> set method --> complete new object
 	 */
 	@SuppressWarnings("unchecked")
-	public List<T> findEntity(T type) throws Exception{
+	public Map<String,T> findEntity(T type) throws Exception{
 		ConnectUtil connUtil = new ConnectUtil();
 		Connection conn = connUtil.getConn();
-		List<T> list = new ArrayList<>();
+		Map<String,T> map = new Hashtable<>();
 		Class<?> clz = type.getClass();
 		mkSqlUtil mkSql = new mkSqlUtil();
-		
 		String sql = mkSql.createFindSQL(clz);
 		Statement st = conn.createStatement();
 		ResultSet rs = st.executeQuery(sql);
 		
 		while(rs.next()) {
-			// To create a new object, which will be put into the result list.
 			T obj = (T) clz.getConstructor().newInstance();
-			// get information from each 'type'(the object)
+			Object keyName = null;
 			for(Field field : clz.getDeclaredFields()) {
 				SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
-				
-				// get each column name and by this column name to search the table
-				// column name --> set method --> complete new object
 				String columnName = an.columnName();
 				Object objVar = rs.getObject(columnName);
+				if(columnName.equals("flower_name")||columnName.equals("user_userName")||columnName.equals("person_name"))
+					keyName = objVar;
 				Method method = clz.getDeclaredMethod(an.setMethod(),Object.class);
 				method.invoke(obj, objVar);
 			}
-			
-			list.add(obj);
+			map.put((String) keyName, obj);
 		}
-		return list;
+		return map;
 	}
+	
 	
 	/*
 	 * Input: An object
@@ -144,6 +141,10 @@ public class BaseDao<T> {
 	 * 		2. Get sql statement(Prepared one)
 	 * 		3. Analyze the object, get its corresponding table name and name
 	 * 		4. Get complete sql statement and delete it from the table
+	 * 
+	 * !! Table name or column name cannot be wrapped by ' in sql statement !!
+	 * !! PreparedStatement cannot be used to replace table name or column name !!
+	 * !! Question mark in String 'replace' method should be added '\\' before it !!
 	 */
 	public int deleteEntity(T type) throws Exception {
 		ConnectUtil connUtil = new ConnectUtil();
