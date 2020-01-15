@@ -36,6 +36,9 @@ public class People {
 	public void setManager(boolean isManager) {
 		this.isManager = isManager;
 	}
+	public People() {
+		super();
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
