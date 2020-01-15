@@ -79,11 +79,21 @@ public class mkSqlUtil {
 		
 		return res.append(" WHERE ")
 					.append(name)
-					.append("=?").toString();
+					.append(" = ?").toString();
 	}
 	
-
-
+	/*
+	 * DELETE FROM table_name WHERE condition;
+	 */
+	public String createDeleteSQL(Class<?> clz) {
+		StringBuilder sb = new StringBuilder(50);
+		Map<String,String> params = getParams(clz);
+		String tableName = params.get("tableName");
+		sb.append("DELETE FROM ")
+			.append(tableName)
+			.append(" WHERE ? = ?");
+		return sb.toString();
+	}
 
 
 

@@ -61,23 +61,16 @@ public class Flower {
 	
 	public Flower() {}
 	
+	public Flower(String flowerName) {
+		this.flowerName = flowerName;
+	}
+	
 	public Flower(String flowerName, double price, int stock) {
 		super();
 		this.flowerName = flowerName;
 		this.price = price;
 		this.stock = stock;
 	}
-	
-	/* This constructor will be used in the find entity
-	 * because we do not need more information other than its name.	 
-	 */
-	public Flower(String flowerName) {
-		super();
-		this.flowerName = flowerName;
-		this.price = 0.0;
-		this.stock = 0;
-	}
-	
 	
 	@Override
 	public int hashCode() {

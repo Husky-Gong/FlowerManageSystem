@@ -95,11 +95,14 @@ public class BaseDao<T> {
 	}
 	
 	/*
-	 * This method contains 2 sub-methods
-	 * 		1. One is to get all information from the table;
-	 * 		2. The other one will get exact one information from the table;
-	 * !! When we use 'getDeclaredMethod' to get methods having parameters, 
-	 * 		we have to put those parameters' classes after its method's name
+	 * This method get one object and with this input object information
+	 * 	1. we can get its field. With the annotation, we can get each field's corresponding column name and
+	 * get each column's information.
+	 *  2. Initialize one new object same as the input object's class
+	 *  	!! USING 'clz.getConstructor().newInstance();'
+	 * 	3. Using set method, which is also got by the annotation, to set each field in the new instance.
+	 * 		!! When we use 'getDeclaredMethod' to get methods having parameters, 
+	 * 			we have to put those parameters' classes after its method's name
 	 */
 	@SuppressWarnings("unchecked")
 	public List<T> findEntity(T type) throws Exception{
@@ -130,7 +133,44 @@ public class BaseDao<T> {
 			
 			list.add(obj);
 		}
-		
 		return list;
+	}
+	
+	/*
+	 * Input: An object
+	 * Output: Number of lines in SQL table infected
+	 * Steps:
+	 * 		1. Set connection
+	 * 		2. Get sql statement(Prepared one)
+	 * 		3. Analyze the object, get its corresponding table name and name
+	 * 		4. Get complete sql statement and delete it from the table
+	 */
+	public int deleteEntity(T type) throws Exception {
+		ConnectUtil connUtil = new ConnectUtil();
+		Connection conn = connUtil.getConn();
+		Class<?> clz = type.getClass();
+		mkSqlUtil mkSql = new mkSqlUtil();
+		PreparedStatement ps = null;
+		String sql = mkSql.createDeleteSQL(clz);
+		
+		int parameterIndex = 1;
+		String whereInfo = null;
+		for(Field field : clz.getDeclaredFields()) {
+			SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
+			if(an.readOnly()) continue;
+			
+			Method method = clz.getDeclaredMethod(an.getMethod());
+			if(an.getMethod().contains("userName") || an.getMethod().contains("FlowerName")) {
+				sql = sql.replaceFirst("?", an.columnName());
+				System.out.println(sql);
+				ps = conn.prepareStatement(sql);
+				whereInfo = (String) method.invoke(type);
+				ps.setObject(parameterIndex, whereInfo);
+				System.out.println(ps.toString());
+				break;
+			}
+			if(ps == null) System.out.println("Not exists!!");
+		}
+		return ps.executeUpdate();
 	}
 }

@@ -33,4 +33,12 @@ public class SQLTest {
 		
 		System.out.println(i);
 	}
+	
+	@Test
+	public <T> void testDeleteFunction() {
+		System.out.println("You are now testing delete function......");
+		mkSqlUtil mkSql = new mkSqlUtil();
+		String sql = mkSql.createDeleteSQL(Flower.class);
+		System.out.println(sql);
+	}
 }

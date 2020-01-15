@@ -1,10 +1,12 @@
 package SystemTest;
 
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Test;
 
 import DAOs.BaseDao;
+import FunctionHelper.DeleteHelper;
 import FunctionHelper.FindHelper;
 import FunctionHelper.InsertHelper;
 import SystemClass.Flower;
@@ -35,5 +37,17 @@ public class DaoTest {
 		for(T var:flwlist) {
 			System.out.println(var);
 		}
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public <T> void testDeleteEntity() throws Exception {
+		System.out.println("You are now testing delete entity......");
+		DeleteHelper deleteFlower = new DeleteHelper();
+		BaseDao<T> testDao = new BaseDao<T>();
+		
+		int i = testDao.deleteEntity((T) deleteFlower.deleteFlower());
+		System.out.println(i);
 	}
 }
