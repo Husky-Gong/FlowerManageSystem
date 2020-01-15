@@ -1,8 +1,6 @@
 package SystemTest;
 
 import java.util.List;
-import java.util.Scanner;
-
 import org.junit.Test;
 
 import DAOs.BaseDao;

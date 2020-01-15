@@ -161,8 +161,7 @@ public class BaseDao<T> {
 			
 			Method method = clz.getDeclaredMethod(an.getMethod());
 			if(an.getMethod().contains("userName") || an.getMethod().contains("FlowerName")) {
-				sql = sql.replaceFirst("?", an.columnName());
-				System.out.println(sql);
+				sql = sql.replaceFirst("\\?", an.columnName());
 				ps = conn.prepareStatement(sql);
 				whereInfo = (String) method.invoke(type);
 				ps.setObject(parameterIndex, whereInfo);
