@@ -61,7 +61,22 @@ public class OperateUtil<T> {
 	 * 3. if exists, return back
 	 * 4. Otherwise, add the new user into the hash table and utilize the insertEntity to update the user database
 	 */
+	@SuppressWarnings("resource")
 	public void register() {
-		
+		Scanner input = new Scanner(System.in);
+		System.out.println("Please input your username:");
+		String userName = input.next();
+		while(userData.containsKey(userName)) {
+			System.out.println("This username exists, please try again.");
+			userName = input.next();
+		}
+		System.out.println("Input your password:");
+		String passWord = input.next();
+		System.out.println("What's your name:");
+		String name = input.next();
+		System.out.println("Money you want to deposit:");
+		double money = input.nextDouble();
+		People newUser = new People(userName, passWord, name, money);
+		userData.put(userName, newUser);
 	}
 }

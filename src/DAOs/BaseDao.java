@@ -124,6 +124,10 @@ public class BaseDao<T> {
 				Object objVar = rs.getObject(columnName);
 				if(columnName.equals("flower_name")||columnName.equals("user_userName")||columnName.equals("person_name"))
 					keyName = objVar;
+				System.out.println(an.setMethod());
+				System.out.println(Object.class);
+				
+				System.out.println(objVar.getClass());
 				Method method = clz.getDeclaredMethod(an.setMethod(),Object.class);
 				method.invoke(obj, objVar);
 			}

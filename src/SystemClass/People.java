@@ -1,49 +1,96 @@
 package SystemClass;
 
+import SystemUtils.SystemAnnotation;
+
+@SystemAnnotation(tableName="people")
 public class People {
+	@SystemAnnotation(
+			readOnly = false,
+			setMethod = "setUserName",
+			getMethod = "getUserName",
+			columnName = "user_userName"
+			)
 	private String userName;
+	
+	@SystemAnnotation(
+			readOnly = false,
+			setMethod = "setPassWord",
+			getMethod = "getPassWord",
+			columnName = "user_passWord"
+			)
 	private String passWord;
+	
+	@SystemAnnotation(
+			readOnly = false,
+			setMethod = "setName",
+			getMethod = "getName",
+			columnName = "user_name"
+			)
 	private String name;
+	
+	@SystemAnnotation(
+			readOnly = false,
+			setMethod = "setMoney",
+			getMethod = "getMoney",
+			columnName = "user_money"
+			)
 	private double money;
-	private boolean isManager;
+	
+	@SystemAnnotation(
+			readOnly = false,
+			setMethod = "setManager",
+			getMethod = "isManager",
+			columnName = "user_level"
+			)
+	private String isManager;
+	
 	public String getUserName() {
 		return userName;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserName(Object userName) {
+		this.userName = (String) userName;
 	}
 	public String getPassWord() {
 		return passWord;
 	}
-	public void setPassWord(String passWord) {
-		this.passWord = passWord;
+	public void setPassWord(Object passWord) {
+		this.passWord = (String) passWord;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setName(Object name) {
+		this.name = (String) name;
 	}
 	public double getMoney() {
 		return money;
 	}
-	public void setMoney(double money) {
-		this.money = money;
+	public void setMoney(Object money) {
+		this.money = (double) money;
 	}
-	public boolean isManager() {
+	public String isManager() {
 		return isManager;
 	}
-	public void setManager(boolean isManager) {
-		this.isManager = isManager;
+	public void setManager(Object isManager) {
+		this.isManager = (String) isManager;
 	}
-	public People() {
+	public People() {}
+	
+	
+	
+	public People(String userName, String passWord, String name, double money) {
 		super();
+		this.userName = userName;
+		this.passWord = passWord;
+		this.name = name;
+		this.money = money;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (isManager ? 1231 : 1237);
+		result = prime * result + ((isManager == null) ? 0 : isManager.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(money);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -61,7 +108,10 @@ public class People {
 		if (getClass() != obj.getClass())
 			return false;
 		People other = (People) obj;
-		if (isManager != other.isManager)
+		if (isManager == null) {
+			if (other.isManager != null)
+				return false;
+		} else if (!isManager.equals(other.isManager))
 			return false;
 		if (Double.doubleToLongBits(money) != Double.doubleToLongBits(other.money))
 			return false;
@@ -87,7 +137,7 @@ public class People {
 		return "People [userName=" + userName + ", passWord=" + passWord + ", name=" + name + ", money=" + money
 				+ ", isManager=" + isManager + "]";
 	}
-	public People(String userName, String passWord, String name, double money, boolean isManager) {
+	public People(String userName, String passWord, String name, double money, String isManager) {
 		super();
 		this.userName = userName;
 		this.passWord = passWord;
