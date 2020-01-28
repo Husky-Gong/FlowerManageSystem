@@ -124,10 +124,6 @@ public class BaseDao<T> {
 				Object objVar = rs.getObject(columnName);
 				if(columnName.equals("flower_name")||columnName.equals("user_userName")||columnName.equals("person_name"))
 					keyName = objVar;
-				System.out.println(an.setMethod());
-				System.out.println(Object.class);
-				
-				System.out.println(objVar.getClass());
 				Method method = clz.getDeclaredMethod(an.setMethod(),Object.class);
 				method.invoke(obj, objVar);
 			}
@@ -165,7 +161,7 @@ public class BaseDao<T> {
 			if(an.readOnly()) continue;
 			
 			Method method = clz.getDeclaredMethod(an.getMethod());
-			if(an.getMethod().contains("userName") || an.getMethod().contains("FlowerName")) {
+			if(an.getMethod().contains("UserName") || an.getMethod().contains("FlowerName")) {
 				sql = sql.replaceFirst("\\?", an.columnName());
 				ps = conn.prepareStatement(sql);
 				whereInfo = (String) method.invoke(type);
@@ -173,7 +169,10 @@ public class BaseDao<T> {
 				System.out.println(ps.toString());
 				break;
 			}
-			if(ps == null) System.out.println("Not exists!!");
+			if(ps == null) {
+				System.out.println("Not exists!!");
+				break;
+			}
 		}
 		return ps.executeUpdate();
 	}

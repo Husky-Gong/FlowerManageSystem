@@ -76,7 +76,10 @@ public class People {
 	}
 	public People() {}
 	
-	
+	public People(String userName) {
+		super();
+		this.userName = userName;
+	}
 	
 	public People(String userName, String passWord, String name, double money) {
 		super();

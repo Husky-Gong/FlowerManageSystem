@@ -40,6 +40,7 @@ public class DaoTest {
 			System.out.println(obj);
 			System.out.println("-------------");
 		}
+		
 		System.out.println("User table below:");
 		Map<String,T> userMap = testDao.findEntity((T) find.getUser());
 		for(Map.Entry<String, T> entry:userMap.entrySet()) {
@@ -59,6 +60,16 @@ public class DaoTest {
 		DeleteHelper deleteFlower = new DeleteHelper();
 		BaseDao<T> testDao = new BaseDao<T>();
 		int i = testDao.deleteEntity((T) deleteFlower.deleteFlower());
+		System.out.println(i);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public <T> void testDeleteEntity2() throws Exception {
+		System.out.println("Your are now testing delete user entity......");
+		DeleteHelper deleteUser = new DeleteHelper();
+		BaseDao<T> testDao = new BaseDao<T>();
+		int i = testDao.deleteEntity((T) deleteUser.deleteUser());
 		System.out.println(i);
 	}
 }
