@@ -46,9 +46,7 @@ public class InsertHelper {
 		String name = input.next();
 		System.out.println("Money you want to deposit:");
 		double money = input.nextDouble();
-		System.out.println("Your level?");
-		String user_level = input.next();
-		People newUser = new People(userName, passWord, name, money, user_level);
+		People newUser = new People(userName, passWord, name, money, "user");
 		return newUser;
 	}
 	

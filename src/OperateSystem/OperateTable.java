@@ -11,22 +11,26 @@ public class OperateTable {
 		
 	}
 	
+	@SuppressWarnings({ "resource", "rawtypes" })
 	@Test
 	public void table() throws Exception {
 		Scanner input = new Scanner(System.in);
-		
 		OperateUtil opUtil = new OperateUtil();
 		
 		while(true) {
+			// First initialize the database.
 			opUtil.initialize();
+			
 			System.out.println("\t\t------Welcome to Flower System------\n Please make your choice:"
-					+ "\t\t\t\t1. Resgister"
+					+ "\t\t\t\t1. Regist"
 					+ "\t\t\t\t2. Login"
 					+ "\t\t\t\t3. Exit");
 			int choice = input.nextInt();
 			switch(choice) {
 				case 1:
-					
+					opUtil.register();
+				case 2:
+					opUtil.login();
 			}
 			
 		}

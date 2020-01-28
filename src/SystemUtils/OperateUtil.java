@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import DAOs.BaseDao;
 import FunctionHelper.FindHelper;
+import FunctionHelper.InsertHelper;
 import SystemClass.Flower;
 import SystemClass.People;
 
@@ -52,7 +53,7 @@ public class OperateUtil<T> {
 		BaseDao<T> initialDao = new BaseDao<T>();
 		FindHelper findHelp = new FindHelper();
 		flowerData = (Map<String, Flower>) initialDao.findEntity((T) findHelp.getFlowers());
-		// userData = (Map<String, People>) initialDao.findEntity((T) findHelp.getUser());
+		userData = (Map<String, People>) initialDao.findEntity((T) findHelp.getUser());
 	}
 	
 	/*
@@ -61,25 +62,24 @@ public class OperateUtil<T> {
 	 * 3. if exists, return back
 	 * 4. Otherwise, add the new user into the hash table and utilize the insertEntity to update the user database
 	 */
-	@SuppressWarnings("resource")
-	public void register() {
-		Scanner input = new Scanner(System.in);
-		System.out.println("Please input your username:");
-		String userName = input.next();
-		while(userData.containsKey(userName)) {
-			System.out.println("This username exists, please try again.");
-			userName = input.next();
+	@SuppressWarnings("unchecked")
+	public void register() throws Exception {
+		System.out.println("Welcome our new user!");
+		InsertHelper testInsert = new InsertHelper();
+		People newUser = testInsert.addNewUser();
+		BaseDao<T> testDao = new BaseDao<T>();
+		
+		while(userData.containsKey(newUser.getUserName())) {
+			System.out.println("This username has existed, please change another one!");
+			newUser = testInsert.addNewUser();
 		}
-		System.out.println("Input your password:");
-		String passWord = input.next();
-		System.out.println("What's your name:");
-		String name = input.next();
-		System.out.println("Money you want to deposit:");
-		double money = input.nextDouble();
-		System.out.println("Your level:");
-		String level = input.next();
-		People newUser = new People(userName, passWord, name, money,level);
-		userData.put(userName, newUser);
+		
+		userData.put(newUser.getUserName(), newUser);
+		int i = testDao.insertEntity((T) newUser);
+		if(i==1) System.out.println("You have registered successfully!");
+	}
+	
+	public void login() {
 		
 	}
 }

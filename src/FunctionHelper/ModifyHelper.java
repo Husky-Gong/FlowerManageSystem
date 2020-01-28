@@ -3,6 +3,7 @@ package FunctionHelper;
 import java.util.Scanner;
 
 import SystemClass.Flower;
+import SystemClass.People;
 
 /*
  * This class will act as a helper to generate modify sql
@@ -28,8 +29,16 @@ public class ModifyHelper {
 		return flower;
 	}
 	
-	private void userModifyHelper() {
-		
+	private People userModifyHelper() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Which user do you want to modify? please input its name:");
+		String flowerName = input.next();
+		System.out.println("What's this user's new name:");
+		String newName = input.next();
+		System.out.println("What's this flower's new password:");
+		String newPassword = input.next();
+		People newUser = new Flower(flowerName, flowerPrice, flowerNum);
+		return flower;
 	}
 	
 	public Flower flowerHelper() {

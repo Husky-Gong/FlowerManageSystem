@@ -13,6 +13,7 @@ import SystemClass.People;
 public class DaoTest {
 	/*
 	 * ------------INSERT-------------
+	 * people and flower both work!
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
