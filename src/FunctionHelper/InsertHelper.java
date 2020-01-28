@@ -3,6 +3,7 @@ package FunctionHelper;
 import java.util.Scanner;
 
 import SystemClass.Flower;
+import SystemClass.People;
 
 /*
  * This class will act as a helper to generate insert sql.
@@ -32,5 +33,26 @@ public class InsertHelper {
 	
 	public Flower addNewFlw() {
 		return flwInsertHelper();
+	}
+	
+	@SuppressWarnings("resource")
+	private People userInsertHelper() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Please input your username:");
+		String userName = input.next();
+		System.out.println("Input your password:");
+		String passWord = input.next();
+		System.out.println("What's your name:");
+		String name = input.next();
+		System.out.println("Money you want to deposit:");
+		double money = input.nextDouble();
+		System.out.println("Your level?");
+		String user_level = input.next();
+		People newUser = new People(userName, passWord, name, money, user_level);
+		return newUser;
+	}
+	
+	public People addNewUser() {
+		return userInsertHelper();
 	}
 }

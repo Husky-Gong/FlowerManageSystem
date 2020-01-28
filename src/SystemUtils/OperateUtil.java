@@ -76,7 +76,10 @@ public class OperateUtil<T> {
 		String name = input.next();
 		System.out.println("Money you want to deposit:");
 		double money = input.nextDouble();
-		People newUser = new People(userName, passWord, name, money);
+		System.out.println("Your level:");
+		String level = input.next();
+		People newUser = new People(userName, passWord, name, money,level);
 		userData.put(userName, newUser);
+		
 	}
 }

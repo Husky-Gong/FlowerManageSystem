@@ -8,9 +8,12 @@ import FunctionHelper.DeleteHelper;
 import FunctionHelper.FindHelper;
 import FunctionHelper.InsertHelper;
 import SystemClass.Flower;
+import SystemClass.People;
 
 public class DaoTest {
-	
+	/*
+	 * ------------INSERT-------------
+	 */
 	@SuppressWarnings("unchecked")
 	@Test
 	public <T> void testInsertEntity() throws Exception{
@@ -27,6 +30,25 @@ public class DaoTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
+	public <T> void testInsertEntity2() throws Exception {
+		System.out.println("You are now testing insert user entity......");
+		
+		InsertHelper testInsert = new InsertHelper();
+		People newUser = testInsert.addNewUser();
+		
+		BaseDao<T> testDao = new BaseDao<T>();
+		int i = testDao.insertEntity((T) newUser);
+		
+		System.out.println(i);
+	}
+	
+	
+/*
+ * --------------GET ALL-------------
+ * people and flower both work!
+ */
+	@SuppressWarnings("unchecked")
+	@Test
 	public <T> void testFindEntity() throws Exception {
 		System.out.println("You are now testing find entity......");
 		FindHelper find = new FindHelper();
@@ -40,7 +62,14 @@ public class DaoTest {
 			System.out.println(obj);
 			System.out.println("-------------");
 		}
-		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public <T> void testFindEntity2() throws Exception {
+		System.out.println("You are now testing find user entity......");
+		FindHelper find = new FindHelper();
+		BaseDao<T> testDao = new BaseDao<T>();
 		System.out.println("User table below:");
 		Map<String,T> userMap = testDao.findEntity((T) find.getUser());
 		for(Map.Entry<String, T> entry:userMap.entrySet()) {
@@ -50,9 +79,14 @@ public class DaoTest {
 			System.out.println(obj);
 			System.out.println("---------------");
 		}
+		
 	}
 	
-
+	
+/*
+ * ----------------DELETE----------------
+ * people and flower both work!
+ */
 	@SuppressWarnings("unchecked")
 	@Test
 	public <T> void testDeleteEntity() throws Exception {

@@ -81,13 +81,6 @@ public class People {
 		this.userName = userName;
 	}
 	
-	public People(String userName, String passWord, String name, double money) {
-		super();
-		this.userName = userName;
-		this.passWord = passWord;
-		this.name = name;
-		this.money = money;
-	}
 	
 	@Override
 	public int hashCode() {
