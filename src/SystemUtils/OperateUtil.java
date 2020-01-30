@@ -115,10 +115,11 @@ public class OperateUtil<T> {
 	@SuppressWarnings({ "resource", "unchecked" })
 	public Map<String, T> buyFlower(People user) throws Exception {
 		Map<String, T> map = new Hashtable<>();
-		map.put("flower", null);
-		map.put("user", (T) user);
 		
 		Scanner input = new Scanner(System.in);
+		/*
+		 * Print available flowers in the system 
+		 */
 		System.out.println("------Purchase System------");
 		DaoTest getFlower = new DaoTest();
 		getFlower.testFindEntity();

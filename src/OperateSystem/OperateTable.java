@@ -3,11 +3,7 @@ package OperateSystem;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Scanner;
-
 import org.junit.Test;
-
-import DAOs.BaseDao;
-import FunctionHelper.ModifyHelper;
 import SystemClass.Flower;
 import SystemClass.People;
 import SystemUtils.OperateUtil;
@@ -69,7 +65,7 @@ public class OperateTable {
 					 */
 					case 1:
 						Map<String,T> map = opUtil.buyFlower(user);
-						if(map.get("flower") != null) {
+						if(map == null) {
 							break;
 						}
 						opUtil.printShopCart();
