@@ -1,10 +1,14 @@
 package OperateSystem;
 
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Scanner;
 
 import org.junit.Test;
 
+import DAOs.BaseDao;
+import FunctionHelper.ModifyHelper;
+import SystemClass.Flower;
 import SystemClass.People;
 import SystemUtils.OperateUtil;
 
@@ -18,6 +22,8 @@ public class OperateTable {
 	public <T> void table() throws Exception {
 		Scanner input = new Scanner(System.in);
 		OperateUtil opUtil = new OperateUtil();
+		BaseDao<T> testDao = new BaseDao<T>();
+		Map<String, Flower> flowerMap = new Hashtable<>();
 		People user = null;
 		
 		while(true) {
@@ -46,23 +52,35 @@ public class OperateTable {
 			while(OperateUtil.flag) {
 				opUtil.initialize();
 				System.out.println("\t\t------Welcome to Flower System------\n Please make your choice:"
-						+ "\t\t\t\t1. Buy flower."
+						+ "\t\t\t\t1. Choose flower."
 						+ "\t\t\t\t2. Return flower."
 						+ "\t\t\t\t3. Add new flower."
 						+ "\t\t\t\t4. Delete flower."
 						+ "\t\t\t\t5. Change flower."
-						+ "\t\t\t\t6. Exit.");
+						+ "\t\t\t\t6. Pay."
+						+ "\t\t\t\t7. Exit.");
 				int decide = input.nextInt();
 				
 				switch(decide) {
 					/*
 					 * Case 1 is to buy flower 
 					 * However, only update database after user confirms to buy
+					 * Every time the customer bought something, this should be written into the flower hash table
+					 * but there is only one customer in the system, so we only pay attention to the latest user.
 					 */
 					case 1:
 						Map<String,T> map = opUtil.buyFlower(user);
+						if(map.get("flower") != null) {
+							break;
+						}
 						opUtil.printShopCart();
+						/*
+						 * Update flower hash table
+						 */
+						flowerMap.put(((Flower) map.get("flower")).getFlowerName(), (Flower) map.get("flower"));
 						break;
+					case 6:
+						opUtil.pay(flowerMap,user);
 				}
 			}
 			

@@ -179,6 +179,10 @@ public class OperateUtil<T> {
 			return -1;
 		}
 	}
+	
+	public void pay(Map<String, Flower> flowerMap, People user) {
+		
+	}
 
 	public void printShopCart() {
 		System.out.println("------Your shopping cart------/n/tFlower Name/t/tNumber");
