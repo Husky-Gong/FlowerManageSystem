@@ -10,6 +10,7 @@ import FunctionHelper.InsertHelper;
 import FunctionHelper.logHelper;
 import SystemClass.Flower;
 import SystemClass.People;
+import SystemTest.DaoTest;
 
 /*
  * This class contains methods which support the operate table to run.
@@ -47,6 +48,7 @@ public class OperateUtil<T> {
 	
 	public static Map<String, Flower> flowerData = new Hashtable<>();
 	public static Map<String, People> userData = new Hashtable<>();
+	public static Map<String, Integer> shoppingCart = new Hashtable<>();
 	public static boolean flag = false;
 	
 	
@@ -86,7 +88,7 @@ public class OperateUtil<T> {
 	 *After logging in, user can continue shopping and change its password or name.
 	 *One flag is needed to identify whether this user has logged in.
 	 */
-	public void login() {
+	public People login() {
 		System.out.println("----Log in----");
 		logHelper log = new logHelper();
 		Map<String, String> map = log.userLog();
@@ -96,15 +98,31 @@ public class OperateUtil<T> {
 		   userData.get(map.get("username")).getPassWord().equals(map.get("password"))){
 			flag = true;
 			System.out.println("You login successfully!");
+			return userData.get(map.get("username"));
 		}
 		else {
 			System.out.println("Wrong username or password. Please try again!");
+			return null;
 		}
 	}
 	
-	
-	public void buyFlower() {
+	/*
+	 * First print flower system for customers choosing.
+	 */
+	@SuppressWarnings("resource")
+	public void buyFlower(People user) throws Exception {
+		Scanner input = new Scanner(System.in);
+		System.out.println("------Purchase System------");
+		DaoTest getFlower = new DaoTest();
+		getFlower.testFindEntity();
 		
+		System.out.println("Which flower you want to buy?");
+		String flowerName = input.next();
+		System.out.println("How many you want to buy?");
+		int flowerNum = input.nextInt();
+		int newNum = shoppingCart.containsKey(flowerName)?flowerNum:shoppingCart.get(flowerName)+flowerNum;
+		
+		shoppingCart.put(flowerName, newNum);
 	}
 	
 	public void returnFlower() {
