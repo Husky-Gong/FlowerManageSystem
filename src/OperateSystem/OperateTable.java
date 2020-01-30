@@ -1,5 +1,6 @@
 package OperateSystem;
 
+import java.util.Map;
 import java.util.Scanner;
 
 import org.junit.Test;
@@ -12,9 +13,9 @@ public class OperateTable {
 		
 	}
 	
-	@SuppressWarnings({ "resource", "rawtypes" })
+	@SuppressWarnings({ "resource", "rawtypes", "unchecked" })
 	@Test
-	public void table() throws Exception {
+	public <T> void table() throws Exception {
 		Scanner input = new Scanner(System.in);
 		OperateUtil opUtil = new OperateUtil();
 		People user = null;
@@ -59,8 +60,9 @@ public class OperateTable {
 					 * However, only update database after user confirms to buy
 					 */
 					case 1:
-						People newUser = opUtil.buyFlower(user);
+						Map<String,T> map = opUtil.buyFlower(user);
 						opUtil.printShopCart();
+						break;
 				}
 			}
 			

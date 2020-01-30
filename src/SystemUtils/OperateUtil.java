@@ -45,17 +45,16 @@ import SystemTest.DaoTest;
  */
 public class OperateUtil<T> {
 	Scanner input = new Scanner(System.in);
-	
+
 	public static Map<String, Flower> flowerData = new Hashtable<>();
 	public static Map<String, People> userData = new Hashtable<>();
-	public static Map<String, Integer> shoppingCart = new Hashtable<>();
+	public static Map<String, Double> shoppingCart = new Hashtable<>();
 	public static boolean flag = false;
-	
+
 	static {
-		shoppingCart.put("total", 0);
+		shoppingCart.put("total", 0.0);
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	public void initialize() throws Exception {
 		BaseDao<T> initialDao = new BaseDao<T>();
@@ -63,12 +62,12 @@ public class OperateUtil<T> {
 		flowerData = (Map<String, Flower>) initialDao.findEntity((T) findHelp.getFlowers());
 		userData = (Map<String, People>) initialDao.findEntity((T) findHelp.getUser());
 	}
-	
+
 	/*
-	 * 1. Ask for new user information
-	 * 2. Check whether the new userName exists in the userData(hash table) by key
-	 * 3. if exists, return back
-	 * 4. Otherwise, add the new user into the hash table and utilize the insertEntity to update the user database
+	 * 1. Ask for new user information 2. Check whether the new userName exists in
+	 * the userData(hash table) by key 3. if exists, return back 4. Otherwise, add
+	 * the new user into the hash table and utilize the insertEntity to update the
+	 * user database
 	 */
 	@SuppressWarnings("unchecked")
 	public void register() throws Exception {
@@ -76,89 +75,121 @@ public class OperateUtil<T> {
 		InsertHelper testInsert = new InsertHelper();
 		People newUser = testInsert.addNewUser();
 		BaseDao<T> testDao = new BaseDao<T>();
-		
-		while(userData.containsKey(newUser.getUserName())) {
+
+		while (userData.containsKey(newUser.getUserName())) {
 			System.out.println("This username has existed, please change another one!");
 			newUser = testInsert.addNewUser();
 		}
-		
+
 		userData.put(newUser.getUserName(), newUser);
 		int i = testDao.insertEntity((T) newUser);
-		if(i==1) System.out.println("You have registered successfully!");
+		if (i == 1)
+			System.out.println("You have registered successfully!");
 	}
-	
+
 	/*
-	 *This function is used to help user log in
-	 *After logging in, user can continue shopping and change its password or name.
-	 *One flag is needed to identify whether this user has logged in.
+	 * This function is used to help user log in After logging in, user can continue
+	 * shopping and change its password or name. One flag is needed to identify
+	 * whether this user has logged in.
 	 */
 	public People login() {
 		System.out.println("----Log in----");
 		logHelper log = new logHelper();
 		Map<String, String> map = log.userLog();
-		
-		if(userData.containsKey(map.get("username")) 
-				&& 
-		   userData.get(map.get("username")).getPassWord().equals(map.get("password"))){
+
+		if (userData.containsKey(map.get("username"))
+				&& userData.get(map.get("username")).getPassWord().equals(map.get("password"))) {
 			flag = true;
 			System.out.println("You login successfully!");
 			return userData.get(map.get("username"));
-		}
-		else {
+		} else {
 			System.out.println("Wrong username or password. Please try again!");
 			return null;
 		}
 	}
-	
+
 	/*
-	 * First print flower system for customers choosing.
-	 * Every time customer chooses one flower, then update shopping cart
+	 * First print flower system for customers choosing. Every time customer chooses
+	 * one flower, then update shopping cart
 	 */
-	@SuppressWarnings("resource")
-	public People buyFlower(People user) throws Exception {
+	@SuppressWarnings({ "resource", "unchecked" })
+	public Map<String, T> buyFlower(People user) throws Exception {
+		Map<String, T> map = new Hashtable<>();
+		map.put("flower", null);
+		map.put("user", (T) user);
+		
 		Scanner input = new Scanner(System.in);
 		System.out.println("------Purchase System------");
 		DaoTest getFlower = new DaoTest();
 		getFlower.testFindEntity();
-		
+
 		System.out.println("Which flower you want to buy?");
 		String flowerName = input.next();
 		System.out.println("How many you want to buy?");
 		int flowerNum = input.nextInt();
-		int newNum = shoppingCart.containsKey(flowerName)?flowerNum:shoppingCart.get(flowerName)+flowerNum;
-		
+
+		if (!flowerData.containsKey(flowerName) || flowerNum > flowerData.get(flowerName).getStock()) {
+			System.out.println("Wrong flower name or not enough flower! Please try again!!");
+			return null;
+		}
+		double price = flowerData.get(flowerName).getPrice();
+		double newNum = shoppingCart.containsKey(flowerName) ? flowerNum*price : shoppingCart.get(flowerName) + flowerNum*price;
+
 		shoppingCart.put(flowerName, newNum);
-		if((shoppingCart.get("total")+flowerData.get(flowerName).getPrice()*flowerNum)>user.getMoney()) {
+		if ((shoppingCart.get("total") + newNum) > user.getMoney()) 
 			System.out.println("You don't have enough money! Please try again!");
-			return user;
-		}
 		else {
-			double money = user.getMoney()-flowerData.get(flowerName).getPrice()*flowerNum;
+			double money = user.getMoney() - newNum;
 			userData.get(user.getUserName()).setMoney(money);
-			return userData.get(user.getUserName());
+			int newStock = flowerData.get(flowerName).getStock() - flowerNum;
+			flowerData.get(flowerName).setStock(newStock);
+
+			int result = confirm(flowerName, flowerNum, flowerData.get(flowerName).getPrice());
+			if(result == 0) {
+				map.put("flower", (T) flowerData.get(flowerName));
+				map.put("user", (T) userData.get(user.getUserName()));
+			}
+		}
+		return map;
+	}
+
+	public void returnFlower() {
+
+	}
+
+	/*
+	 * This function is to ask user to confirm its order If user confirms,
+	 * (flower&user)database will be updated If no, database won't be updated and
+	 * shopping cart won't change
+	 */
+	@SuppressWarnings("resource")
+	public int confirm(String flowerName, int number, double price) throws Exception {
+		Scanner input = new Scanner(System.in);
+
+		System.out.println("------Your Order------/nFlowerName/tNumber/tPrice/ttotal");
+		System.out.println(flowerName + "/t" + number + "/t" + price + "/t" + number * price);
+		System.out.println("Confirm---1. Yes/t2. No");
+		int choice = input.nextInt();
+		if (choice == 1) {
+			shoppingCart.put(flowerName, number*price);
+			double newTotal = shoppingCart.get("total")+number*price;
+			shoppingCart.put("total", newTotal);
+			return 0;
+		} else {
+			return -1;
 		}
 	}
-	
-	public void returnFlower() {
-		
-	}
-	
-	public void confirm() {
-		Scanner input = new Scanner(System.in);
-		System.out.println("-----Confirm your orders-----/n1. Yes/2. No");
-		
-	}
-	
+
 	public void printShopCart() {
 		System.out.println("------Your shopping cart------/n/tFlower Name/t/tNumber");
 		String total = "null/t/t0";
-		for(Map.Entry<String, Integer> entry:shoppingCart.entrySet()) {
+		for (Map.Entry<String, Integer> entry : shoppingCart.entrySet()) {
 			String key = entry.getKey();
 			int value = entry.getValue();
-			if(!key.equals("total"))
-				System.out.println(key+"/t/t"+value);
+			if (!key.equals("total"))
+				System.out.println(key + "/t/t" + value);
 			else {
-				total = key+"/t/t"+value;
+				total = key + "/t/t" + value;
 			}
 		}
 		System.out.println(total);
