@@ -29,8 +29,30 @@ public class OperateTable {
 			switch(choice) {
 				case 1:
 					opUtil.register();
+					break;
 				case 2:
 					opUtil.login();
+					break;
+				case 3:
+					OperateUtil.flag=false;
+					System.out.println("See you!");
+					System.exit(0);
+					break;
+			}
+			
+			while(OperateUtil.flag) {
+				System.out.println("\t\t------Welcome to Flower System------\n Please make your choice:"
+						+ "\t\t\t\t1. Buy flower."
+						+ "\t\t\t\t2. Return flower."
+						+ "\t\t\t\t3. Add new flower."
+						+ "\t\t\t\t4. Delete flower."
+						+ "\t\t\t\t5. Change flower."
+						+ "\t\t\t\t6. Exit.");
+				int decide = input.nextInt();
+				
+				switch(decide) {
+					
+				}
 			}
 			
 		}

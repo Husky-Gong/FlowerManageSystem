@@ -7,6 +7,7 @@ import java.util.Scanner;
 import DAOs.BaseDao;
 import FunctionHelper.FindHelper;
 import FunctionHelper.InsertHelper;
+import FunctionHelper.logHelper;
 import SystemClass.Flower;
 import SystemClass.People;
 
@@ -46,6 +47,7 @@ public class OperateUtil<T> {
 	
 	public static Map<String, Flower> flowerData = new Hashtable<>();
 	public static Map<String, People> userData = new Hashtable<>();
+	public static boolean flag = false;
 	
 	
 	@SuppressWarnings("unchecked")
@@ -79,7 +81,36 @@ public class OperateUtil<T> {
 		if(i==1) System.out.println("You have registered successfully!");
 	}
 	
+	/*
+	 *This function is used to help user log in
+	 *After logging in, user can continue shopping and change its password or name.
+	 *One flag is needed to identify whether this user has logged in.
+	 */
 	public void login() {
+		System.out.println("----Log in----");
+		logHelper log = new logHelper();
+		Map<String, String> map = log.userLog();
+		
+		if(userData.containsKey(map.get("username")) 
+				&& 
+		   userData.get(map.get("username")).getPassWord().equals(map.get("password"))){
+			flag = true;
+			System.out.println("You login successfully!");
+		}
+		else {
+			System.out.println("Wrong username or password. Please try again!");
+		}
+	}
+	
+	
+	public void buyFlower() {
 		
 	}
+	
+	public void returnFlower() {
+		
+	}
+	
+	public void confirm() {}
+	
 }

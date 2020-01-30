@@ -5,6 +5,7 @@ import org.junit.Test;
 import DAOs.BaseDao;
 import FunctionHelper.ModifyHelper;
 import SystemClass.Flower;
+import SystemUtils.OperateUtil;
 import SystemUtils.mkSqlUtil;
 
 public class SQLTest {
@@ -25,12 +26,14 @@ public class SQLTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public <T> void testModifyFunction() throws Exception {
+		OperateUtil<T> opUtil = new OperateUtil<T>();
+		opUtil.initialize();
 		System.out.println("You are now testing modify function...");
 		ModifyHelper flwHelp = new FunctionHelper.ModifyHelper();
-		Flower newFlower = flwHelp.flowerHelper();
+		
+		Flower newFlower = flwHelp.flowerHelper(OperateUtil.flowerData);
 		BaseDao<T> testDao = new BaseDao<T>();
 		int i = testDao.modifyEntity((T) newFlower);
-		
 		System.out.println(i);
 	}
 	
