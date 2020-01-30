@@ -180,8 +180,21 @@ public class OperateUtil<T> {
 		}
 	}
 	
-	public void pay(Map<String, Flower> flowerMap, People user) {
-		
+	
+	/*
+	 * This function is used to update the database
+	 * and empty shopping cart
+	 * Previous steps only change the temporary tables
+	 */
+	@SuppressWarnings("unchecked")
+	public void pay(Map<String, Flower> flowerMap, People user) throws Exception {
+		BaseDao<T> dao = new BaseDao<T>();
+		for(Map.Entry<String, Flower> entry:flowerMap.entrySet()) {
+			Flower flower = entry.getValue();
+			dao.modifyEntity((T) flower);
+		}
+		dao.modifyEntity((T) user);
+		shoppingCart = null;
 	}
 
 	public void printShopCart() {
