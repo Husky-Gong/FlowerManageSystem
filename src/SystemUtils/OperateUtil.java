@@ -169,9 +169,9 @@ public class OperateUtil<T> {
 	public int confirm(String flowerName, int number, double price) throws Exception {
 		Scanner input = new Scanner(System.in);
 
-		System.out.println("------Your Order------/nFlowerName/tNumber/tPrice/ttotal");
-		System.out.println(flowerName + "/t" + number + "/t" + price + "/t" + number * price);
-		System.out.println("Confirm---1. Yes/t2. No");
+		System.out.println("------Your Order------\nFlowerName\tNumber\tPrice\ttotal");
+		System.out.println(flowerName + "\t" + number + "\t" + price + "\t" + number * price);
+		System.out.println("Confirm---\n1. Yes\t2. No");
 		int choice = input.nextInt();
 		if (choice == 1) {
 			shoppingCart.put(flowerName, number*price);
@@ -201,15 +201,15 @@ public class OperateUtil<T> {
 	}
 
 	public void printShopCart() {
-		System.out.println("------Your shopping cart------/n/tFlower Name/t/tNumber");
-		String total = "null/t/t0";
+		System.out.println("------Your shopping cart------\n\tFlower Name\t\tNumber");
+		String total = "null\t\t0";
 		for (Map.Entry<String, Double> entry : shoppingCart.entrySet()) {
 			String key = entry.getKey();
 			double value = entry.getValue();
 			if (!key.equals("total"))
-				System.out.println(key + "/t/t" + value);
+				System.out.println(key + "\t\t" + value);
 			else {
-				total = key + "/t/t" + value;
+				total = key + "\t\t" + value;
 			}
 		}
 		System.out.println(total);

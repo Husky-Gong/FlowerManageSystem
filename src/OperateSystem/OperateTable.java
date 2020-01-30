@@ -66,7 +66,7 @@ public class OperateTable {
 					case 1:
 						Map<String,T> map = opUtil.buyFlower(user);
 						if(map == null) {
-							break;
+							continue;
 						}
 						opUtil.printShopCart();
 						/*
@@ -74,7 +74,7 @@ public class OperateTable {
 						 */
 						flowerMap.put(((Flower) map.get("flower")).getFlowerName(), (Flower) map.get("flower"));
 						user = (People) map.get("user");
-						break;
+						continue;
 					case 6:
 						opUtil.pay(flowerMap,user);
 				}
