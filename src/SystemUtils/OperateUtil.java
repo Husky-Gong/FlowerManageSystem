@@ -134,7 +134,9 @@ public class OperateUtil<T> {
 			return null;
 		}
 		double price = flowerData.get(flowerName).getPrice();
-		double newNum = shoppingCart.containsKey(flowerName) ? flowerNum*price : shoppingCart.get(flowerName) + flowerNum*price;
+		System.out.println(flowerNum*price);
+		System.out.println(shoppingCart.containsKey(flowerName));
+		double newNum = shoppingCart.containsKey(flowerName) ?  shoppingCart.get(flowerName) + flowerNum*price:flowerNum*price;
 
 		shoppingCart.put(flowerName, newNum);
 		if ((shoppingCart.get("total") + newNum) > user.getMoney()) 
