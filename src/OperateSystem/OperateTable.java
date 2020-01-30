@@ -22,7 +22,6 @@ public class OperateTable {
 	public <T> void table() throws Exception {
 		Scanner input = new Scanner(System.in);
 		OperateUtil opUtil = new OperateUtil();
-		BaseDao<T> testDao = new BaseDao<T>();
 		Map<String, Flower> flowerMap = new Hashtable<>();
 		People user = null;
 		
