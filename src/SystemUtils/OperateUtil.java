@@ -183,9 +183,9 @@ public class OperateUtil<T> {
 	public void printShopCart() {
 		System.out.println("------Your shopping cart------/n/tFlower Name/t/tNumber");
 		String total = "null/t/t0";
-		for (Map.Entry<String, Integer> entry : shoppingCart.entrySet()) {
+		for (Map.Entry<String, Double> entry : shoppingCart.entrySet()) {
 			String key = entry.getKey();
-			int value = entry.getValue();
+			double value = entry.getValue();
 			if (!key.equals("total"))
 				System.out.println(key + "/t/t" + value);
 			else {
