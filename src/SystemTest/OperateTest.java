@@ -22,4 +22,6 @@ public class OperateTest {
 			System.out.println(value);
 		}
 	}
+	
+	
 }

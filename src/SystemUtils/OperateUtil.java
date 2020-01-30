@@ -51,6 +51,10 @@ public class OperateUtil<T> {
 	public static Map<String, Integer> shoppingCart = new Hashtable<>();
 	public static boolean flag = false;
 	
+	static {
+		shoppingCart.put("total", 0);
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public void initialize() throws Exception {
@@ -108,9 +112,10 @@ public class OperateUtil<T> {
 	
 	/*
 	 * First print flower system for customers choosing.
+	 * Every time customer chooses one flower, then update shopping cart
 	 */
 	@SuppressWarnings("resource")
-	public void buyFlower(People user) throws Exception {
+	public People buyFlower(People user) throws Exception {
 		Scanner input = new Scanner(System.in);
 		System.out.println("------Purchase System------");
 		DaoTest getFlower = new DaoTest();
@@ -123,12 +128,39 @@ public class OperateUtil<T> {
 		int newNum = shoppingCart.containsKey(flowerName)?flowerNum:shoppingCart.get(flowerName)+flowerNum;
 		
 		shoppingCart.put(flowerName, newNum);
+		if((shoppingCart.get("total")+flowerData.get(flowerName).getPrice()*flowerNum)>user.getMoney()) {
+			System.out.println("You don't have enough money! Please try again!");
+			return user;
+		}
+		else {
+			double money = user.getMoney()-flowerData.get(flowerName).getPrice()*flowerNum;
+			userData.get(user.getUserName()).setMoney(money);
+			return userData.get(user.getUserName());
+		}
 	}
 	
 	public void returnFlower() {
 		
 	}
 	
-	public void confirm() {}
+	public void confirm() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("-----Confirm your orders-----/n1. Yes/2. No");
+		
+	}
 	
+	public void printShopCart() {
+		System.out.println("------Your shopping cart------/n/tFlower Name/t/tNumber");
+		String total = "null/t/t0";
+		for(Map.Entry<String, Integer> entry:shoppingCart.entrySet()) {
+			String key = entry.getKey();
+			int value = entry.getValue();
+			if(!key.equals("total"))
+				System.out.println(key+"/t/t"+value);
+			else {
+				total = key+"/t/t"+value;
+			}
+		}
+		System.out.println(total);
+	}
 }

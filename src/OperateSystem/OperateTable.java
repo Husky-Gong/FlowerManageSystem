@@ -54,8 +54,13 @@ public class OperateTable {
 				int decide = input.nextInt();
 				
 				switch(decide) {
+					/*
+					 * Case 1 is to buy flower 
+					 * However, only update database after user confirms to buy
+					 */
 					case 1:
-						opUtil.buyFlower(user);
+						People newUser = opUtil.buyFlower(user);
+						opUtil.printShopCart();
 				}
 			}
 			
