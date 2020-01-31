@@ -107,4 +107,18 @@ public class DaoTest {
 		int i = testDao.deleteEntity((T) deleteUser.deleteUser());
 		System.out.println(i);
 	}
+	
+	/*
+	 * user Modify test
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	public <T> void testModifyEntity() throws Exception {
+		System.out.println("You are now testing Modify entity......");
+		BaseDao<T> testDao = new BaseDao<T>();
+		Flower flower = new Flower("Lily",25.55,100);
+		//People user = new People("zexi","Zz010013","pangzi",107.22,"manager");
+		int i = testDao.modifyEntity((T) flower);
+		System.out.println(i);
+	}
 }

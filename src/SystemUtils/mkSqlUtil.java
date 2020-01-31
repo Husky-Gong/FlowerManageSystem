@@ -73,7 +73,7 @@ public class mkSqlUtil {
 			res2.append(paramList[i]).append(",");
 			res.append(paramList[i])
 				.append("= ?,");
-			name = paramList[i].contains("name")? paramList[i]:name;
+			name = paramList[i].contains("flower_name")||paramList[i].contains("userName")? paramList[i]:name;
 		}
 		res.setLength(res.length()-1);
 		

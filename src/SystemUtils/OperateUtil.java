@@ -131,23 +131,21 @@ public class OperateUtil<T> {
 
 		if (!flowerData.containsKey(flowerName) || flowerNum > flowerData.get(flowerName).getStock()) {
 			System.out.println("Wrong flower name or not enough flower! Please try again!!");
-			return null;
+			return map;
 		}
 		double price = flowerData.get(flowerName).getPrice();
 		System.out.println(flowerNum*price);
 		System.out.println(shoppingCart.containsKey(flowerName));
-		double newNum = shoppingCart.containsKey(flowerName) ?  shoppingCart.get(flowerName) + flowerNum*price:flowerNum*price;
-
-		shoppingCart.put(flowerName, newNum);
-		if ((shoppingCart.get("total") + newNum) > user.getMoney()) 
+		if (flowerNum*price > user.getMoney()) 
 			System.out.println("You don't have enough money! Please try again!");
 		else {
-			double money = user.getMoney() - newNum;
+			double money = user.getMoney() - flowerNum*price;
 			userData.get(user.getUserName()).setMoney(money);
 			int newStock = flowerData.get(flowerName).getStock() - flowerNum;
 			flowerData.get(flowerName).setStock(newStock);
 
 			int result = confirm(flowerName, flowerNum, flowerData.get(flowerName).getPrice());
+			System.out.println(shoppingCart.get("total"));
 			if(result == 0) {
 				map.put("flower", (T) flowerData.get(flowerName));
 				map.put("user", (T) userData.get(user.getUserName()));
@@ -194,10 +192,11 @@ public class OperateUtil<T> {
 		BaseDao<T> dao = new BaseDao<T>();
 		for(Map.Entry<String, Flower> entry:flowerMap.entrySet()) {
 			Flower flower = entry.getValue();
+			System.out.println(flower);
 			dao.modifyEntity((T) flower);
 		}
 		dao.modifyEntity((T) user);
-		shoppingCart = null;
+		shoppingCart.clear();
 	}
 
 	public void printShopCart() {

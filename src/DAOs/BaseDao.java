@@ -58,7 +58,7 @@ public class BaseDao<T> {
 			SystemAnnotation an = field.getAnnotation(SystemAnnotation.class);
 			if(an.readOnly()) continue;
 			Method method = clz.getDeclaredMethod(an.getMethod());
-			if(an.getMethod().contains("userName")|| an.getMethod().contains("FlowerName"))
+			if(an.getMethod().contains("UserName")|| an.getMethod().contains("FlowerName"))
 				whereInfo = (String) method.invoke(type);
 			
 			Object obj = method.invoke(type);
