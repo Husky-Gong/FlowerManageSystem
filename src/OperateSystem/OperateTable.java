@@ -47,13 +47,13 @@ public class OperateTable {
 			while(OperateUtil.flag) {
 				opUtil.initialize();
 				System.out.println("\t\t------Welcome to Flower System------\n Please make your choice:"
-						+ "\t\t\t\t1. Choose flower."
-						+ "\t\t\t\t2. Return flower."
-						+ "\t\t\t\t3. Add new flower."
-						+ "\t\t\t\t4. Delete flower."
-						+ "\t\t\t\t5. Change flower."
-						+ "\t\t\t\t6. Pay."
-						+ "\t\t\t\t7. Exit.");
+						+ "\t\t\t1. Choose flower."
+						+ "\t\t\t2. Return flower."
+						+ "\t\t\t3. Add new flower."
+						+ "\t\t\t4. Delete flower."
+						+ "\t\t\t5. Change flower."
+						+ "\t\t\t6. Pay."
+						+ "\t\t\t7. Exit.");
 				int decide = input.nextInt();
 				
 				switch(decide) {
